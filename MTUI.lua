@@ -2,13 +2,13 @@ MTUI = {};
 
 function MTUI:ToggleMusic()
     local s = GetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_MUSIC_ENABLED);
-	if (s == "1") then
-		SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_MUSIC_ENABLED, "0");
-		d("Music disabled");
-	else
-		SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_MUSIC_ENABLED, "1");
-		d("Music enabled");
-	end;
+    if (s == "1") then
+	SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_MUSIC_ENABLED, "0");
+	d("Music disabled");
+    else
+        SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_MUSIC_ENABLED, "1");
+        d("Music enabled");
+    end;
 end;
 
 function MTUI:SetMasterVolume(level)
