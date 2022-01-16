@@ -17,7 +17,6 @@ local function SelectQuickslot(delta)
 end;
 
 local function TintCompass(r, g, b)
-    ZO_ReticleContainerReticle:SetColor(0, 1, 0);
     ZO_CompassFrameLeft:SetColor(r, g, b, 1);
     ZO_CompassFrameCenter:SetColor(r, g, b, 1);
     ZO_CompassFrameRight:SetColor(r, g, b, 1);
