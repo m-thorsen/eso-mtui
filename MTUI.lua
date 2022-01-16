@@ -101,7 +101,7 @@ end);
 
 EVENT_MANAGER:RegisterForEvent('MTUI_CombatState', EVENT_PLAYER_COMBAT_STATE, function(code, inCombat)
     if inCombat then
-        TintCompass(1, 0.75, 0.75);
+        TintCompass(1, 0.4, 0.25);
     else
         TintCompass(1, 1, 1);
     end
