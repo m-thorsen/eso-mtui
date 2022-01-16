@@ -1,0 +1,21 @@
+<Bindings>
+	<Layer name="SI_KEYBINDINGS_LAYER_GENERAL">
+		<Category name="MTUI">
+            <Action name="MTUI_TOGGLE_MUSIC">
+				<Down>MTUI:ToggleMusic()</Down>
+			</Action>
+			<Action name="MTUI_INCREASE_MASTER_VOLUME">
+				<Down>MTUI:IncreaseMasterVolume()</Down>
+			</Action>
+            <Action name="MTUI_DECREASE_MASTER_VOLUME">
+				<Down>MTUI:DecreaseMasterVolume()</Down>
+			</Action>
+            <Action name="MTUI_NEXT_QUICKSLOT">
+				<Down>MTUI:NextQuickslot()</Down>
+			</Action>
+            <Action name="MTUI_PREV_QUICKSLOT">
+				<Down>MTUI:PrevQuickslot()</Down>
+			</Action>
+		</Category>
+	</Layer>
+</Bindings>
