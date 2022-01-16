@@ -30,7 +30,7 @@ local function TintCompass(r, g, b)
     ZO_CompassFrameRight:SetColor(r, g, b, 1);
 end
 
-local function TightenAttributeBares()
+local function TightenAttributeBars()
     local offsetX = 70;
     ZO_PlayerAttributeMagicka:ClearAnchors()
     ZO_PlayerAttributeMagicka:SetAnchor(RIGHT, ZO_PlayerAttributeHealth, LEFT, -offsetX, 0);
@@ -86,26 +86,27 @@ function MTUI:Initialize()
         return true;
     end;
 
+    TightenAttributeBars();
+
     SetCVar('SkipPregameVideos', '1');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_INCREASE_MASTER_VOLUME', 'Increase master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_DECREASE_MASTER_VOLUME', 'Decrease master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_TOGGLE_MUSIC', 'Toggle music');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_NEXT_QUICKSLOT', 'Next quickslot');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_PREV_QUICKSLOT', 'Previous quickslot')
-
-    EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_ACTIVATED, function()
-        ZO_ActionButtons_ToggleShowGlobalCooldown();
-        TightenAttributeBares();
-    end);
-
-    EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
-        if inCombat then
-            TintCompass(1, 0.4, 0.25);
-        else
-            TintCompass(1, 1, 1);
-        end
-    end);
 end;
+
+EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_ACTIVATED, function()
+    ZO_ActionButtons_ToggleShowGlobalCooldown();
+end);
+
+EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
+    if inCombat then
+        TintCompass(1, 0.4, 0.25);
+    else
+        TintCompass(1, 1, 1);
+    end
+end);
 
 EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addonName)
     if (addonName == MTUI.name) then
