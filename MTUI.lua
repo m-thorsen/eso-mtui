@@ -72,28 +72,21 @@ local function UpdateAttributeBarsOffsetX()
     ZO_PlayerAttributeStamina:SetAnchor(LEFT, ZO_PlayerAttributeHealth, RIGHT, offsetX, 0);
 end;
 
-local function SetCVars()
+EVENT_MANAGER:RegisterForEvent("MTUI_OnLoad", EVENT_ADD_ON_LOADED, function()
+    function KEYBINDING_MANAGER:IsChordingAlwaysEnabled()
+        return true;
+    end;
+
     SetCVar('SkipPregameVideos', '1');
-end;
-
-local function OnLoad()
-    ZO_ActionButtons_ToggleShowGlobalCooldown();
-    UpdateAttributeBarsOffsetX();
-end;
-
-local function OnInit()
-    SetCVars();
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_INCREASE_MASTER_VOLUME', 'Increase master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_DECREASE_MASTER_VOLUME', 'Decrease master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_TOGGLE_MUSIC', 'Toggle music');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_NEXT_QUICKSLOT', 'Next quickslot');
-    ZO_CreateStringId('SI_BINDING_NAME_MTUI_PREV_QUICKSLOT', 'Previous quickslot');
-end;
+    ZO_CreateStringId('SI_BINDING_NAME_MTUI_PREV_QUICKSLOT', 'Previous quickslot')
+end);
 
-EVENT_MANAGER:RegisterForEvent("MTSettings_Loaded", EVENT_ADD_ON_LOADED, OnInit);
-EVENT_MANAGER:RegisterForEvent('MTUI_OnLoad', EVENT_PLAYER_ACTIVATED, OnLoad);
+EVENT_MANAGER:RegisterForEvent('MTUI_OnPlayerActive', EVENT_PLAYER_ACTIVATED, function()
+    ZO_ActionButtons_ToggleShowGlobalCooldown();
+    UpdateAttributeBarsOffsetX();
+end);
 
--- Make mod chords available for bindings
-function KEYBINDING_MANAGER:IsChordingAlwaysEnabled()
-	return true;
-end;
