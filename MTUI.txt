@@ -1,5 +1,4 @@
 ## Title: MTUI
-## Version: 1
 ## Author: m-thorsen
 ## APIVersion: 101032
 

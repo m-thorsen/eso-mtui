@@ -1,5 +1,7 @@
 MTUI = {};
+MTUI.name = "MTUI";
 
+-- local methods
 local function SelectQuickslot(delta)
     local slots = { 12, 11, 10, 9, 16, 15, 14, 13 };
     local curr = GetCurrentQuickslot();
@@ -14,6 +16,12 @@ local function SelectQuickslot(delta)
 
     SetCurrentQuickslot(slots[index]);
     PlaySound("Click_Positive");
+end;
+
+local function SetMasterVolume(level)
+    level = tonumber(level);
+    SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_AUDIO_VOLUME, level);
+    d("Master volume: "..level);
 end;
 
 local function TintCompass(r, g, b)
@@ -50,12 +58,6 @@ function MTUI:ToggleMusic()
     end;
 end;
 
-local function SetMasterVolume(level)
-    level = tonumber(level);
-    SetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_AUDIO_VOLUME, level);
-    d("Master volume: "..level);
-end;
-
 function MTUI:DecreaseMasterVolume()
     local v = tonumber(GetSetting(SETTING_TYPE_AUDIO, AUDIO_SETTING_AUDIO_VOLUME));
 
@@ -78,31 +80,35 @@ function MTUI:IncreaseMasterVolume()
     end;
 end;
 
+-- init
+function MTUI:Initialize()
+    function KEYBINDING_MANAGER:IsChordingAlwaysEnabled()
+        return true;
+    end;
 
--- override global function
-function KEYBINDING_MANAGER:IsChordingAlwaysEnabled()
-    return true;
-end;
-
-EVENT_MANAGER:RegisterForEvent("MTUI_OnLoad", EVENT_ADD_ON_LOADED, function()
     SetCVar('SkipPregameVideos', '1');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_INCREASE_MASTER_VOLUME', 'Increase master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_DECREASE_MASTER_VOLUME', 'Decrease master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_TOGGLE_MUSIC', 'Toggle music');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_NEXT_QUICKSLOT', 'Next quickslot');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_PREV_QUICKSLOT', 'Previous quickslot')
-end);
 
-EVENT_MANAGER:RegisterForEvent('MTUI_OnPlayerActive', EVENT_PLAYER_ACTIVATED, function()
-    ZO_ActionButtons_ToggleShowGlobalCooldown();
-    TightenAttributeBares();
-end);
+    EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_ACTIVATED, function()
+        ZO_ActionButtons_ToggleShowGlobalCooldown();
+        TightenAttributeBares();
+    end);
 
-EVENT_MANAGER:RegisterForEvent('MTUI_CombatState', EVENT_PLAYER_COMBAT_STATE, function(code, inCombat)
-    if inCombat then
-        TintCompass(1, 0.4, 0.25);
-    else
-        TintCompass(1, 1, 1);
+    EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
+        if inCombat then
+            TintCompass(1, 0.4, 0.25);
+        else
+            TintCompass(1, 1, 1);
+        end
+    end);
+end;
+
+EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addonName)
+    if (addonName == MTUI.name) then
+        MTUI:Initialize();
     end
 end);
-
