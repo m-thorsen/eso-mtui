@@ -1,5 +1,6 @@
 MTUI = {};
 MTUI.name = "MTUI";
+MTUI.initialized = false;
 
 -- local methods
 local function SelectQuickslot(delta)
@@ -86,22 +87,22 @@ function MTUI:Initialize()
         return true;
     end;
 
-    TightenAttributeBars();
-
     SetCVar('SkipPregameVideos', '1');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_INCREASE_MASTER_VOLUME', 'Increase master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_DECREASE_MASTER_VOLUME', 'Decrease master volume');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_TOGGLE_MUSIC', 'Toggle music');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_NEXT_QUICKSLOT', 'Next quickslot');
     ZO_CreateStringId('SI_BINDING_NAME_MTUI_PREV_QUICKSLOT', 'Previous quickslot')
+
+    ZO_ActionButtons_ToggleShowGlobalCooldown();
+
+    TightenAttributeBars();
+
+    MTUI.initialized = true;
 end;
 
-EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_ACTIVATED, function()
-    ZO_ActionButtons_ToggleShowGlobalCooldown();
-end);
-
 EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
-    if inCombat then
+    if (inCombat) then
         TintCompass(1, 0.4, 0.25);
     else
         TintCompass(1, 1, 1);
@@ -109,7 +110,7 @@ EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_,
 end);
 
 EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addonName)
-    if (addonName == MTUI.name) then
+    if (addonName == MTUI.name and not MTUI.initialized) then
         MTUI:Initialize();
     end
 end);
