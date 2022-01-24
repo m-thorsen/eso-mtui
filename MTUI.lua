@@ -114,3 +114,10 @@ EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addon
         MTUI:Initialize();
     end
 end);
+
+SLASH_COMMANDS["/leave"] = function()
+    if not IsUnitGrouped("player") then
+        return;
+    end;
+    GroupLeave();
+end;
