@@ -31,12 +31,21 @@ local function TintCompass(r, g, b)
     ZO_CompassFrameRight:SetColor(r, g, b, 1);
 end
 
-local function TightenAttributeBars()
-    local offsetX = 70;
+local function MoveFrames()
+    ZO_ActiveCombatTipsTip:ClearAnchors();
+    ZO_ActiveCombatTipsTip:SetAnchor(CENTER, GuiRoot, CENTER, 0, -100);
+
+    ZO_SynergyTopLevelContainer:ClearAnchors();
+    ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 100);
+
+    ZO_FocusedQuestTrackerPanel:ClearAnchors();
+    ZO_FocusedQuestTrackerPanel:SetAnchor(TOPRIGHT, GuiRoot, TOPRIGHT, 0, 260);
+
+    local attributeSpacing = 50;
     ZO_PlayerAttributeMagicka:ClearAnchors()
-    ZO_PlayerAttributeMagicka:SetAnchor(RIGHT, ZO_PlayerAttributeHealth, LEFT, -offsetX, 0);
+    ZO_PlayerAttributeMagicka:SetAnchor(RIGHT, ZO_PlayerAttributeHealth, LEFT, -attributeSpacing, 0);
     ZO_PlayerAttributeStamina:ClearAnchors()
-    ZO_PlayerAttributeStamina:SetAnchor(LEFT, ZO_PlayerAttributeHealth, RIGHT, offsetX, 0);
+    ZO_PlayerAttributeStamina:SetAnchor(LEFT, ZO_PlayerAttributeHealth, RIGHT, attributeSpacing, 0);
 end;
 
 -- Public methods
@@ -81,6 +90,31 @@ function MTUI:IncreaseMasterVolume()
     end;
 end;
 
+local function LimitInteractions()
+    local function ShouldDenyInteraction()
+        local action, name, interactionBlocked, isOwned, additionalInteractInfo, context, contextLink, isCrime = GetGameCameraInteractableActionInfo();
+
+        if (name ~= '' and name ~= nil and not IsControlKeyDown()) then
+            if (interactionBlocked and additionalInteractInfo == ADDITIONAL_INTERACT_INFO_EMPTY) then return true end;
+            if (name == GetUnitName("companion")) then return true end;
+            if (IsUnitFriendlyFollower("interact")) then return true end;
+            if (isCrime) then return true end;
+        end;
+
+        return false;
+    end;
+
+    local DoInteraction = FISHING_MANAGER.StartInteraction;
+
+    FISHING_MANAGER.StartInteraction = function(...)
+        return ShouldDenyInteraction() or DoInteraction(...);
+    end;
+
+    ZO_PreHook(RETICLE, "TryHandlingInteraction", function(interactionPossible)
+        return interactionPossible and ShouldDenyInteraction();
+    end);
+end;
+
 -- init
 function MTUI:Initialize()
     function KEYBINDING_MANAGER:IsChordingAlwaysEnabled()
@@ -96,18 +130,19 @@ function MTUI:Initialize()
 
     ZO_ActionButtons_ToggleShowGlobalCooldown();
 
-    TightenAttributeBars();
+    MoveFrames();
+    LimitInteractions();
+
+    EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
+        if (inCombat) then
+            TintCompass(1, 0.4, 0.25);
+        else
+            TintCompass(1, 1, 1);
+        end
+    end);
 
     MTUI.initialized = true;
 end;
-
-EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_PLAYER_COMBAT_STATE, function(_, inCombat)
-    if (inCombat) then
-        TintCompass(1, 0.4, 0.25);
-    else
-        TintCompass(1, 1, 1);
-    end
-end);
 
 EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addonName)
     if (addonName == MTUI.name and not MTUI.initialized) then
