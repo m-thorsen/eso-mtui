@@ -33,7 +33,7 @@ end
 
 local function MoveFrames()
     ZO_ActiveCombatTipsTip:ClearAnchors();
-    ZO_ActiveCombatTipsTip:SetAnchor(CENTER, GuiRoot, CENTER, 0, -100);
+    ZO_ActiveCombatTipsTip:SetAnchor(CENTER, GuiRoot, CENTER, 0, 0);
 
     ZO_SynergyTopLevelContainer:ClearAnchors();
     ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 100);
