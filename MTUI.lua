@@ -32,11 +32,11 @@ local function TintCompass(r, g, b)
 end
 
 local function MoveFrames()
-    ZO_ActiveCombatTipsTip:ClearAnchors();
-    ZO_ActiveCombatTipsTip:SetAnchor(CENTER, GuiRoot, CENTER, 0, 0);
+    ZO_ActiveCombatTips:ClearAnchors();
+    ZO_ActiveCombatTips:SetAnchor(CENTER, GuiRoot, CENTER, 0, 100);
 
     ZO_SynergyTopLevelContainer:ClearAnchors();
-    ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 100);
+    ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 50);
 
     ZO_FocusedQuestTrackerPanel:ClearAnchors();
     ZO_FocusedQuestTrackerPanel:SetAnchor(TOPRIGHT, GuiRoot, TOPRIGHT, 0, 260);
