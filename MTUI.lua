@@ -33,7 +33,7 @@ end
 
 local function MoveFrames()
     ZO_ActiveCombatTips:ClearAnchors();
-    ZO_ActiveCombatTips:SetAnchor(CENTER, GuiRoot, CENTER, 0, 100);
+    ZO_ActiveCombatTips:SetAnchor(CENTER, GuiRoot, CENTER, 0, 400);
 
     ZO_SynergyTopLevelContainer:ClearAnchors();
     ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 50);
@@ -149,6 +149,8 @@ EVENT_MANAGER:RegisterForEvent(MTUI.name, EVENT_ADD_ON_LOADED, function(_, addon
         MTUI:Initialize();
     end
 end);
+
+-- SLASH_COMMANDS["/rl"] = ReloadUi();
 
 SLASH_COMMANDS["/leave"] = function()
     if not IsUnitGrouped("player") then
