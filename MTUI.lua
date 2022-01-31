@@ -33,10 +33,10 @@ end
 
 local function MoveFrames()
     ZO_ActiveCombatTips:ClearAnchors();
-    ZO_ActiveCombatTips:SetAnchor(CENTER, GuiRoot, CENTER, 0, 400);
+    ZO_ActiveCombatTips:SetAnchor(BOTTOM, GuiRoot, BOTTOM, 0, -300);
 
-    ZO_SynergyTopLevelContainer:ClearAnchors();
-    ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 50);
+    -- ZO_SynergyTopLevelContainer:ClearAnchors();
+    -- ZO_SynergyTopLevelContainer:SetAnchor(CENTER, GuiRoot, CENTER, 0, 50);
 
     ZO_FocusedQuestTrackerPanel:ClearAnchors();
     ZO_FocusedQuestTrackerPanel:SetAnchor(TOPRIGHT, GuiRoot, TOPRIGHT, 0, 260);
