@@ -8,4 +8,4 @@ modules/combatcompass.lua
 modules/interactionlimiter.lua
 modules/slashcommands.lua
 modules/keybinds.lua
-modules/keybinds.xml
+Bindings.xml
